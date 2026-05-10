@@ -16,30 +16,12 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_URL || "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+app.use(cors({
+    origin: ["http://localhost:5173", "ethara-ai.netlify.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-
-    const isConfiguredOrigin = allowedOrigins.includes(origin);
-    const isLocalhostDevOrigin =
-      process.env.NODE_ENV !== "production" && /^http:\/\/localhost:\d+$/.test(origin);
-
-    if (isConfiguredOrigin || isLocalhostDevOrigin) return callback(null, true);
-
-    return callback(new Error("CORS blocked: origin not allowed"));
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(morgan("dev"));
 
