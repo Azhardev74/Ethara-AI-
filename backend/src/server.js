@@ -17,9 +17,10 @@ connectDB();
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "ethara-ai.netlify.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    origin: ["http://localhost:5173", "https://ethara-ai.netlify.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
